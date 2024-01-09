@@ -11,12 +11,28 @@ UsExtraUIWidget* UsExtraUIPreset::CreatePresetWidget(TSubclassOf<UsExtraUIWidget
 		UsExtraUIWidget* LCreatedWidget = ::CreateWidget<UsExtraUIWidget>(GetOwningPlayer(), TSubclassOf<UUserWidget>(InWidgetClass));
 		if (IsValid(LCreatedWidget))
 		{
+			LCreatedWidget->ParentPreset = this;
+			
 			Widgets.Add(LCreatedWidget);
 			return LCreatedWidget;
 		}
 	}
 
 	return nullptr;
+}
+
+bool UsExtraUIPreset::RemovePresetWidget(UsExtraUIWidget* InWidget)
+{
+	if (IsValid(InWidget) && Widgets.Contains(InWidget))
+	{
+		InWidget->ParentPreset = nullptr;
+		InWidget->DeactivateWidget();
+
+		Widgets.Remove(InWidget);
+		return true;
+	}
+
+	return false;
 }
 
 APlayerController* UsExtraUIPreset::GetOwningPlayer() const
@@ -47,4 +63,14 @@ UWorld* UsExtraUIPreset::GetWorld() const
 	}
 
 	return nullptr;
+}
+
+void UsExtraUIPreset::OnDeinitialize_Implementation()
+{
+	
+}
+
+void UsExtraUIPreset::OnInitialize_Implementation()
+{
+	
 }

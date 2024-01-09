@@ -12,12 +12,17 @@ class UsExtraUIWidget;
 UCLASS(Blueprintable, BlueprintType, Abstract, HideFunctions=(CreateWidget, AddToViewport))
 class SEXTRAUIMANAGER_API UsExtraUIPreset : public UObject
 {
+	friend class UsExtraUIManagerSubsystem;
+	 
 	GENERATED_BODY()
 
 public:
 
 	UFUNCTION(BlueprintCallable, meta=(BlueprintInternalUseOnly="true"))
 	UsExtraUIWidget* CreatePresetWidget(TSubclassOf<UsExtraUIWidget> InWidgetClass);
+
+	UFUNCTION(BlueprintCallable)
+	bool RemovePresetWidget(UsExtraUIWidget* InWidget);
 	
 	UFUNCTION(BlueprintPure)
 	APlayerController* GetOwningPlayer() const;
@@ -32,6 +37,12 @@ public:
 	
 protected:
 
+	UFUNCTION(BlueprintNativeEvent)
+	void OnInitialize();
+
+	UFUNCTION(BlueprintNativeEvent)
+	void OnDeinitialize();
+	
 	UPROPERTY(EditDefaultsOnly, Category = Configuration)
 	FName PresetName;
 

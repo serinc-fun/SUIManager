@@ -6,6 +6,7 @@
 
 #include "sExtraUIWidget.generated.h"
 
+class UsExtraUIPreset;
 UENUM(BlueprintType, meta = (Bitflags, UseEnumValuesAsMaskValuesInEditor = "true"))
 namespace EsExtraUIWidgetActiveWith
 {
@@ -24,10 +25,15 @@ ENUM_CLASS_FLAGS(EsExtraUIWidgetActiveWith::Type);
 UCLASS(Abstract, HideFunctions=(AddToViewport))
 class SEXTRAUIMANAGER_API UsExtraUIWidget : public UUserWidget
 {
+	friend class UsExtraUIPreset;
+	
 	GENERATED_BODY()
 
 public:
 
+	UFUNCTION(BlueprintCallable, Category = "sExtraUI|Manager|Widget")
+	virtual void AddWidgetToViewport(int32 ZOrder = 0);
+	
 	UFUNCTION(BlueprintPure, Category = "sExtraUI|Manager|Widget")
 	FORCEINLINE bool IsActive() const { return bIsActive; }
 	
@@ -36,6 +42,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "sExtraUI|Manager|Widget")
 	void DeactivateWidget();
+
+	virtual void RemoveFromParent() override;
 	
 protected:
 
@@ -53,6 +61,9 @@ protected:
 
 private:
 
+	UPROPERTY(Transient)
+	UsExtraUIPreset* ParentPreset;
+	
 	void AddToViewport(int32 ZOrder = 0) = delete;
 	bool AddToPlayerScreen(int32 ZOrder = 0) = delete;
 };
