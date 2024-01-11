@@ -5,6 +5,7 @@
 #include "WorldSubsystem.h"
 #include "sExtraUISubsystem.generated.h"
 
+class UsExtraUIWidget;
 class UsExtraUIPreset;
 class UsExtraUIPresetDefault;
 /**
@@ -26,6 +27,12 @@ public:
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 	// UWorldSubsystem overrides end
 
+	UFUNCTION(BlueprintCallable, Category = "sExtraUI|Manager")
+	void DetermineInput();
+
+	UFUNCTION(BlueprintCallable, Category = "sExtraUI|Manager")
+	void WidgetActiveStateChange(UsExtraUIWidget* InWidget, bool InState);
+	
 	UFUNCTION(BlueprintCallable, Category = "sExtraUI|Manager")
 	UsExtraUIPreset* AddPreset(const TSubclassOf<UsExtraUIPreset>& InPresetClass);
 
@@ -51,6 +58,9 @@ protected:
 
 	UPROPERTY(Transient)
 	mutable UsExtraUIPresetDefault* DefaultPreset;
+
+	UPROPERTY(Transient)
+	TArray<UsExtraUIWidget*> ActiveWidgets;
 
 	TMultiMap<TSubclassOf<UsExtraUIPreset>, UsExtraUIPreset*> PresetsMultiMap;
 };

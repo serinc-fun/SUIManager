@@ -9,7 +9,7 @@ class UsExtraUIWidget;
 /**
  * 
  */
-UCLASS(Blueprintable, BlueprintType, Abstract, HideFunctions=(CreateWidget, AddToViewport))
+UCLASS(Abstract, Blueprintable, BlueprintType)
 class SEXTRAUIMANAGER_API UsExtraUIPreset : public UObject
 {
 	friend class UsExtraUIManagerSubsystem;

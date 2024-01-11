@@ -7,6 +7,7 @@
 #include "sExtraUIWidget.generated.h"
 
 class UsExtraUIPreset;
+
 UENUM(BlueprintType, meta = (Bitflags, UseEnumValuesAsMaskValuesInEditor = "true"))
 namespace EsExtraUIWidgetActiveWith
 {
@@ -22,20 +23,21 @@ ENUM_CLASS_FLAGS(EsExtraUIWidgetActiveWith::Type);
 /**
  * 
  */
-UCLASS(Abstract, HideFunctions=(AddToViewport))
+UCLASS(Abstract)
 class SEXTRAUIMANAGER_API UsExtraUIWidget : public UUserWidget
 {
 	friend class UsExtraUIPreset;
+	friend class UsExtraUIManagerSubsystem;
 	
 	GENERATED_BODY()
 
 public:
-
-	UFUNCTION(BlueprintCallable, Category = "sExtraUI|Manager|Widget")
-	virtual void AddWidgetToViewport(int32 ZOrder = 0);
 	
 	UFUNCTION(BlueprintPure, Category = "sExtraUI|Manager|Widget")
 	FORCEINLINE bool IsActive() const { return bIsActive; }
+
+	UFUNCTION(BlueprintPure, Category = "sExtraUI|Manager|Widget")
+	UPARAM(meta = (Bitmask, BitmaskEnum = EsExtraUIWidgetActiveWith)) int32 GetActivateFlags() const { return ActivateFlags; }
 	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "sExtraUI|Manager|Widget")
 	void ActivateWidget();
@@ -47,6 +49,8 @@ public:
 	
 protected:
 
+	virtual void AddToScreen(ULocalPlayer* LocalPlayer, int32 ZOrder) override;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (Bitmask, BitmaskEnum = EsExtraUIWidgetActiveWith), Category = Configuration)
 	int32 ActivateFlags = EsExtraUIWidgetActiveWith::WithCursor;
 
@@ -63,7 +67,7 @@ private:
 
 	UPROPERTY(Transient)
 	UsExtraUIPreset* ParentPreset;
-	
-	void AddToViewport(int32 ZOrder = 0) = delete;
-	bool AddToPlayerScreen(int32 ZOrder = 0) = delete;
+
+	UPROPERTY(Transient)
+	int32 TargetZOrder = 0;
 };

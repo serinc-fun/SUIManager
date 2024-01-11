@@ -3,6 +3,7 @@
 
 #include "sExtraUIPreset.h"
 #include "sExtraUIPresetDefault.h"
+#include "sExtraUIWidget.h"
 
 UsExtraUIManagerSubsystem* UsExtraUIManagerSubsystem::Get(const UWorld* InWorld)
 {
@@ -32,6 +33,60 @@ bool UsExtraUIManagerSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 	}
 
 	return false;
+}
+
+void UsExtraUIManagerSubsystem::DetermineInput()
+{
+	if (ActiveWidgets.Num() > 0)
+	{
+		ActiveWidgets.Sort([] (UsExtraUIWidget& InA, UsExtraUIWidget& InB) -> bool
+		{
+			return InA.TargetZOrder > InB.TargetZOrder;
+		});
+	
+		const auto LLastActiveWidget = ActiveWidgets.Last();
+		if (IsValid(LLastActiveWidget))
+		{
+			const auto LPlayerController = LLastActiveWidget->GetOwningPlayer();
+			const auto LFlags = LLastActiveWidget->GetActivateFlags();
+
+			if ((LFlags & EsExtraUIWidgetActiveWith::Without | EsExtraUIWidgetActiveWith::None) != 0)
+			{
+				LPlayerController->SetInputMode(FInputModeGameOnly().SetConsumeCaptureMouseDown(true));
+				LPlayerController->SetShowMouseCursor(false);
+			}
+
+			if ((LFlags & EsExtraUIWidgetActiveWith::WithInput) != 0)
+			{
+				LPlayerController->SetInputMode(FInputModeUIOnly().SetWidgetToFocus(LLastActiveWidget->GetCachedWidget()));
+			}
+
+			if ((LFlags & EsExtraUIWidgetActiveWith::WithCursor) != 0)
+			{
+				LPlayerController->SetShowMouseCursor(true);
+			}
+		}
+	}
+	else
+	{
+		const auto LPlayerController = GetWorld()->GetFirstPlayerController();
+		
+		LPlayerController->SetInputMode(FInputModeGameOnly().SetConsumeCaptureMouseDown(true));
+		LPlayerController->SetShowMouseCursor(false);
+	}
+}
+
+void UsExtraUIManagerSubsystem::WidgetActiveStateChange(UsExtraUIWidget* InWidget, bool InState)
+{
+	if (IsValid(InWidget))
+	{
+		if (InState)
+			ActiveWidgets.Add(InWidget);
+		else
+			ActiveWidgets.Remove(InWidget);
+
+		DetermineInput();
+	}
 }
 
 UsExtraUIPreset* UsExtraUIManagerSubsystem::AddPreset(const TSubclassOf<UsExtraUIPreset>& InPresetClass)

@@ -2,6 +2,7 @@
 #include "sExtraUIWidget.h"
 
 #include "sExtraUIPreset.h"
+#include "sExtraUISubsystem.h"
 
 void UsExtraUIWidget::ActivateWidget_Implementation()
 {
@@ -9,6 +10,11 @@ void UsExtraUIWidget::ActivateWidget_Implementation()
 	{
 		bIsActive = true;
 		SetVisibility(ActivateVisibility);
+
+		if (IsValid(ParentPreset))
+		{
+			UsExtraUIManagerSubsystem::Get(GetWorld())->WidgetActiveStateChange(this, true);
+		}
 	}
 }
 
@@ -18,14 +24,11 @@ void UsExtraUIWidget::DeactivateWidget_Implementation()
 	{
 		bIsActive = false;
 		SetVisibility(DeactivateVisibility);
-	}
-}
 
-void UsExtraUIWidget::AddWidgetToViewport(int32 ZOrder)
-{
-	if (IsValid(ParentPreset))
-	{
-		Super::AddToViewport(ZOrder);
+		if (IsValid(ParentPreset))
+		{
+			UsExtraUIManagerSubsystem::Get(GetWorld())->WidgetActiveStateChange(this, false);
+		}
 	}
 }
 
@@ -37,4 +40,11 @@ void UsExtraUIWidget::RemoveFromParent()
 	}
 	
 	Super::RemoveFromParent();
+}
+
+void UsExtraUIWidget::AddToScreen(ULocalPlayer* LocalPlayer, int32 ZOrder)
+{
+	TargetZOrder = ZOrder + 10;
+
+	Super::AddToScreen(LocalPlayer, ZOrder);
 }
