@@ -2,7 +2,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UserWidget.h"
+#include "Blueprint/UserWidget.h"
 
 #include "sExtraUIWidget.generated.h"
 

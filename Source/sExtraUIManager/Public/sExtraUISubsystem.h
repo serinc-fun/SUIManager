@@ -2,7 +2,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "WorldSubsystem.h"
+#include "Subsystems/WorldSubsystem.h"
 #include "sExtraUISubsystem.generated.h"
 
 class UsExtraUIWidget;
@@ -18,8 +18,8 @@ class SEXTRAUIMANAGER_API UsExtraUIManagerSubsystem : public UWorldSubsystem
 
 public:
 
-	UFUNCTION(BlueprintPure, Category = "sExtraUI|Manager", DisplayName = "Get sExtraUI Manager Subsystem")
-	static UsExtraUIManagerSubsystem* Get(const UWorld* InWorld);
+	UFUNCTION(BlueprintPure, Category = "sExtraUI|Manager", DisplayName = "Get sExtraUI Manager Subsystem", meta = (WorldContext="InWorldContext"))
+	static UsExtraUIManagerSubsystem* Get(const UObject* InWorldContext);
 
 	// UWorldSubsystem overrides begin
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;

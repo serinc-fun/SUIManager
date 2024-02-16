@@ -3,13 +3,14 @@
 
 #include "sExtraUIPreset.h"
 #include "sExtraUIPresetDefault.h"
-#include "sExtraUIWidget.h"
+#include "Widgets/sExtraUIWidget.h"
 
-UsExtraUIManagerSubsystem* UsExtraUIManagerSubsystem::Get(const UWorld* InWorld)
+UsExtraUIManagerSubsystem* UsExtraUIManagerSubsystem::Get(const UObject* InWorldContext)
 {
-	if (IsValid(InWorld))
+	const auto LWorld = GEngine->GetWorldFromContextObject(InWorldContext, EGetWorldErrorMode::ReturnNull);
+	if (IsValid(LWorld))
 	{
-		return InWorld->GetSubsystem<UsExtraUIManagerSubsystem>();
+		return LWorld->GetSubsystem<UsExtraUIManagerSubsystem>();
 	}
 
 	return nullptr;

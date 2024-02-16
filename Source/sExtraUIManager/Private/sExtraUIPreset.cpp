@@ -1,8 +1,7 @@
 ﻿// Copyright Serinc All Rights Reserved.
 #include "sExtraUIPreset.h"
 
-#include "sExtraUIWidget.h"
-#include "Blueprint/UserWidget.h"
+#include "Widgets/sExtraUIWidget.h"
 
 UsExtraUIWidget* UsExtraUIPreset::CreatePresetWidget(TSubclassOf<UsExtraUIWidget> InWidgetClass)
 {
