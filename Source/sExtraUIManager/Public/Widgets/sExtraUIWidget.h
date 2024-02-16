@@ -49,7 +49,9 @@ public:
 	
 protected:
 
+#if ENGINE_MAJOR_VERSION < 5 || (ENGINE_MAJOR_VERSION > 4 && ENGINE_MINOR_VERSION < 3)
 	virtual void AddToScreen(ULocalPlayer* LocalPlayer, int32 ZOrder) override;
+#endif
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (Bitmask, BitmaskEnum = EsExtraUIWidgetActiveWith), Category = Configuration)
 	int32 ActivateFlags = EsExtraUIWidgetActiveWith::WithCursor;

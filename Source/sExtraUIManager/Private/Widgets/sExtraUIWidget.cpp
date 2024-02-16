@@ -42,9 +42,11 @@ void UsExtraUIWidget::RemoveFromParent()
 	Super::RemoveFromParent();
 }
 
+#if ENGINE_MAJOR_VERSION < 5 || (ENGINE_MAJOR_VERSION > 4 && ENGINE_MINOR_VERSION < 3)
 void UsExtraUIWidget::AddToScreen(ULocalPlayer* LocalPlayer, int32 ZOrder)
 {
 	TargetZOrder = ZOrder + 10;
 
 	Super::AddToScreen(LocalPlayer, ZOrder);
 }
+#endif
