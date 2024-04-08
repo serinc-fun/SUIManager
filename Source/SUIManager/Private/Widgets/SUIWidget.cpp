@@ -1,10 +1,10 @@
 ﻿// Copyright Serinc All Rights Reserved.
-#include "Widgets/sExtraUIWidget.h"
+#include "Widgets/SUIWidget.h"
 
-#include "sExtraUIPreset.h"
-#include "sExtraUISubsystem.h"
+#include "SUIPreset.h"
+#include "SUISubsystem.h"
 
-void UsExtraUIWidget::ActivateWidget_Implementation()
+void USUIWidget::ActivateWidget_Implementation()
 {
 	if (!IsActive())
 	{
@@ -13,12 +13,12 @@ void UsExtraUIWidget::ActivateWidget_Implementation()
 
 		if (IsValid(ParentPreset))
 		{
-			UsExtraUIManagerSubsystem::Get(GetWorld())->WidgetActiveStateChange(this, true);
+			USUIManagerSubsystem::Get(GetWorld())->WidgetActiveStateChange(this, true);
 		}
 	}
 }
 
-void UsExtraUIWidget::DeactivateWidget_Implementation()
+void USUIWidget::DeactivateWidget_Implementation()
 {
 	if (IsActive())
 	{
@@ -27,12 +27,12 @@ void UsExtraUIWidget::DeactivateWidget_Implementation()
 
 		if (IsValid(ParentPreset))
 		{
-			UsExtraUIManagerSubsystem::Get(GetWorld())->WidgetActiveStateChange(this, false);
+			USUIManagerSubsystem::Get(GetWorld())->WidgetActiveStateChange(this, false);
 		}
 	}
 }
 
-void UsExtraUIWidget::RemoveFromParent()
+void USUIWidget::RemoveFromParent()
 {
 	if (IsValid(ParentPreset))
 	{
@@ -43,7 +43,7 @@ void UsExtraUIWidget::RemoveFromParent()
 }
 
 #if ENGINE_MAJOR_VERSION < 5 || (ENGINE_MAJOR_VERSION > 4 && ENGINE_MINOR_VERSION < 3)
-void UsExtraUIWidget::AddToScreen(ULocalPlayer* LocalPlayer, int32 ZOrder)
+void USUIWidget::AddToScreen(ULocalPlayer* LocalPlayer, int32 ZOrder)
 {
 	TargetZOrder = ZOrder + 10;
 

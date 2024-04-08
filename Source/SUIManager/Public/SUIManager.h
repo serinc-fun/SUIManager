@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
 
-class FsExtraUIManagerModule : public IModuleInterface
+class FSUIManagerModule : public IModuleInterface
 {
 public:
 

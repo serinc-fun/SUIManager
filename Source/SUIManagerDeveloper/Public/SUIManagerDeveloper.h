@@ -4,7 +4,7 @@
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
 
-class FsExtraUIManagerDeveloperModule : public IModuleInterface
+class FSUIManagerDeveloperModule : public IModuleInterface
 {
 public:
     virtual void StartupModule() override;

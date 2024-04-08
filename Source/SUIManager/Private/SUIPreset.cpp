@@ -1,13 +1,13 @@
 ﻿// Copyright Serinc All Rights Reserved.
-#include "sExtraUIPreset.h"
+#include "SUIPreset.h"
 
-#include "Widgets/sExtraUIWidget.h"
+#include "Widgets/SUIWidget.h"
 
-UsExtraUIWidget* UsExtraUIPreset::CreatePresetWidget(TSubclassOf<UsExtraUIWidget> InWidgetClass)
+USUIWidget* USUIPreset::CreatePresetWidget(TSubclassOf<USUIWidget> InWidgetClass)
 {
 	if (InWidgetClass)
 	{
-		UsExtraUIWidget* LCreatedWidget = ::CreateWidget<UsExtraUIWidget>(GetOwningPlayer(), TSubclassOf<UUserWidget>(InWidgetClass));
+		USUIWidget* LCreatedWidget = ::CreateWidget<USUIWidget>(GetOwningPlayer(), TSubclassOf<UUserWidget>(InWidgetClass));
 		if (IsValid(LCreatedWidget))
 		{
 			LCreatedWidget->ParentPreset = this;
@@ -20,7 +20,7 @@ UsExtraUIWidget* UsExtraUIPreset::CreatePresetWidget(TSubclassOf<UsExtraUIWidget
 	return nullptr;
 }
 
-bool UsExtraUIPreset::RemovePresetWidget(UsExtraUIWidget* InWidget)
+bool USUIPreset::RemovePresetWidget(USUIWidget* InWidget)
 {
 	if (IsValid(InWidget) && Widgets.Contains(InWidget))
 	{
@@ -34,7 +34,7 @@ bool UsExtraUIPreset::RemovePresetWidget(UsExtraUIWidget* InWidget)
 	return false;
 }
 
-APlayerController* UsExtraUIPreset::GetOwningPlayer() const
+APlayerController* USUIPreset::GetOwningPlayer() const
 {
 	if (IsValid(LocalPlayer))
 	{
@@ -44,7 +44,7 @@ APlayerController* UsExtraUIPreset::GetOwningPlayer() const
 	return nullptr;
 }
 
-APawn* UsExtraUIPreset::GetOwningPawn() const
+APawn* USUIPreset::GetOwningPawn() const
 {
 	if (IsValid(LocalPlayer))
 	{
@@ -54,7 +54,7 @@ APawn* UsExtraUIPreset::GetOwningPawn() const
 	return nullptr;
 }
 
-UWorld* UsExtraUIPreset::GetWorld() const
+UWorld* USUIPreset::GetWorld() const
 {
 	if (!HasAnyFlags(RF_ClassDefaultObject) && IsValid(LocalPlayer))
 	{
@@ -64,12 +64,12 @@ UWorld* UsExtraUIPreset::GetWorld() const
 	return nullptr;
 }
 
-void UsExtraUIPreset::OnDeinitialize_Implementation()
+void USUIPreset::OnDeinitialize_Implementation()
 {
 	
 }
 
-void UsExtraUIPreset::OnInitialize_Implementation()
+void USUIPreset::OnInitialize_Implementation()
 {
 	
 }

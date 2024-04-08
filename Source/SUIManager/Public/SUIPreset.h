@@ -3,26 +3,26 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
-#include "sExtraUIPreset.generated.h"
+#include "SUIPreset.generated.h"
 
-class UsExtraUIWidget;
+class USUIWidget;
 /**
  * 
  */
 UCLASS(Abstract, Blueprintable, BlueprintType)
-class SEXTRAUIMANAGER_API UsExtraUIPreset : public UObject
+class SUIMANAGER_API USUIPreset : public UObject
 {
-	friend class UsExtraUIManagerSubsystem;
+	friend class USUIManagerSubsystem;
 	 
 	GENERATED_BODY()
 
 public:
 
 	UFUNCTION(BlueprintCallable, meta=(BlueprintInternalUseOnly="true"))
-	UsExtraUIWidget* CreatePresetWidget(TSubclassOf<UsExtraUIWidget> InWidgetClass);
+	USUIWidget* CreatePresetWidget(TSubclassOf<USUIWidget> InWidgetClass);
 
 	UFUNCTION(BlueprintCallable)
-	bool RemovePresetWidget(UsExtraUIWidget* InWidget);
+	bool RemovePresetWidget(USUIWidget* InWidget);
 	
 	UFUNCTION(BlueprintPure)
 	APlayerController* GetOwningPlayer() const;
@@ -50,5 +50,5 @@ protected:
 	ULocalPlayer* LocalPlayer;
 	
 	UPROPERTY(BlueprintReadOnly)
-	TArray<UsExtraUIWidget*> Widgets;
+	TArray<USUIWidget*> Widgets;
 };

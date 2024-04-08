@@ -3,9 +3,9 @@
 
 #include "K2Node_CallFunction.h"
 #include "KismetCompiler.h"
-#include "sExtraUIPreset.h"
+#include "SUIPreset.h"
 #include "KismetNodes/SGraphNodeK2Default.h"
-#include "Widgets/sExtraUIWidget.h"
+#include "Widgets/SUIWidget.h"
 
 TSharedPtr<SGraphNode> UK2Node_CreatePresetWidget::CreateVisualWidget()
 {
@@ -16,7 +16,7 @@ void UK2Node_CreatePresetWidget::ExpandNode(FKismetCompilerContext& CompilerCont
 {
 	Super::ExpandNode(CompilerContext, SourceGraph);
 
-	static const FName Create_FunctionName = GET_FUNCTION_NAME_CHECKED(UsExtraUIPreset, CreatePresetWidget);
+	static const FName Create_FunctionName = GET_FUNCTION_NAME_CHECKED(USUIPreset, CreatePresetWidget);
 	static const FName WidgetType_ParamName = TEXT("InWidgetClass");
 
 	UK2Node_CreatePresetWidget* CreateWidgetNode = this;
@@ -38,8 +38,8 @@ void UK2Node_CreatePresetWidget::ExpandNode(FKismetCompilerContext& CompilerCont
 	// create 'UWidgetBlueprintLibrary::Create' call node
 	UK2Node_CallFunction* CallCreateNode = CompilerContext.SpawnIntermediateNode<UK2Node_CallFunction>(CreateWidgetNode, SourceGraph);
 	//CallCreateNode->FunctionReference.SetExternalMember(Create_FunctionName, UUIPresset::StaticClass());
-	const auto LFoundFunction = UsExtraUIPreset::StaticClass()->FindFunctionByName(Create_FunctionName);
-	CallCreateNode->FunctionReference.SetFromField<UFunction>(LFoundFunction, true, UsExtraUIPreset::StaticClass());
+	const auto LFoundFunction = USUIPreset::StaticClass()->FindFunctionByName(Create_FunctionName);
+	CallCreateNode->FunctionReference.SetFromField<UFunction>(LFoundFunction, true, USUIPreset::StaticClass());
 	CallCreateNode->AllocateDefaultPins();
 
 	// store off the class to spawn before we mutate pin connections:
@@ -92,5 +92,5 @@ FText UK2Node_CreatePresetWidget::GetNodeTitleFormat() const
 
 UClass* UK2Node_CreatePresetWidget::GetClassPinBaseClass() const
 {
-	return UsExtraUIWidget::StaticClass();
+	return USUIWidget::StaticClass();
 }

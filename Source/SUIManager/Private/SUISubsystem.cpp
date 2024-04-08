@@ -1,32 +1,32 @@
 ﻿// Copyright Serinc All Rights Reserved.
-#include "sExtraUISubsystem.h"
+#include "SUISubsystem.h"
 
-#include "sExtraUIPreset.h"
-#include "sExtraUIPresetDefault.h"
-#include "Widgets/sExtraUIWidget.h"
+#include "SUIPreset.h"
+#include "SUIPresetDefault.h"
+#include "Widgets/SUIWidget.h"
 
-UsExtraUIManagerSubsystem* UsExtraUIManagerSubsystem::Get(const UObject* InWorldContext)
+USUIManagerSubsystem* USUIManagerSubsystem::Get(const UObject* InWorldContext)
 {
 	const auto LWorld = GEngine->GetWorldFromContextObject(InWorldContext, EGetWorldErrorMode::ReturnNull);
 	if (IsValid(LWorld))
 	{
-		return LWorld->GetSubsystem<UsExtraUIManagerSubsystem>();
+		return LWorld->GetSubsystem<USUIManagerSubsystem>();
 	}
 
 	return nullptr;
 }
 
-void UsExtraUIManagerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
+void USUIManagerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
 }
 
-void UsExtraUIManagerSubsystem::Deinitialize()
+void USUIManagerSubsystem::Deinitialize()
 {
 	Super::Deinitialize();
 }
 
-bool UsExtraUIManagerSubsystem::ShouldCreateSubsystem(UObject* Outer) const
+bool USUIManagerSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
 	if (Super::ShouldCreateSubsystem(Outer))
 	{
@@ -36,11 +36,11 @@ bool UsExtraUIManagerSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 	return false;
 }
 
-void UsExtraUIManagerSubsystem::DetermineInput()
+void USUIManagerSubsystem::DetermineInput()
 {
 	if (ActiveWidgets.Num() > 0)
 	{
-		ActiveWidgets.Sort([] (UsExtraUIWidget& InA, UsExtraUIWidget& InB) -> bool
+		ActiveWidgets.Sort([] (USUIWidget& InA, USUIWidget& InB) -> bool
 		{
 			return InA.TargetZOrder > InB.TargetZOrder;
 		});
@@ -77,7 +77,7 @@ void UsExtraUIManagerSubsystem::DetermineInput()
 	}
 }
 
-void UsExtraUIManagerSubsystem::WidgetActiveStateChange(UsExtraUIWidget* InWidget, bool InState)
+void USUIManagerSubsystem::WidgetActiveStateChange(USUIWidget* InWidget, bool InState)
 {
 	if (IsValid(InWidget))
 	{
@@ -90,9 +90,9 @@ void UsExtraUIManagerSubsystem::WidgetActiveStateChange(UsExtraUIWidget* InWidge
 	}
 }
 
-UsExtraUIPreset* UsExtraUIManagerSubsystem::AddPreset(const TSubclassOf<UsExtraUIPreset>& InPresetClass)
+USUIPreset* USUIManagerSubsystem::AddPreset(const TSubclassOf<USUIPreset>& InPresetClass)
 {
-	const auto LPresetInstance = NewObject<UsExtraUIPreset>(this, InPresetClass);
+	const auto LPresetInstance = NewObject<USUIPreset>(this, InPresetClass);
 
 	if (IsValid(LPresetInstance))
 	{
@@ -107,7 +107,7 @@ UsExtraUIPreset* UsExtraUIManagerSubsystem::AddPreset(const TSubclassOf<UsExtraU
 	return LPresetInstance;
 }
 
-UsExtraUIPreset* UsExtraUIManagerSubsystem::AddPresetUnique(const TSubclassOf<UsExtraUIPreset>& InPresetClass)
+USUIPreset* USUIManagerSubsystem::AddPresetUnique(const TSubclassOf<USUIPreset>& InPresetClass)
 {
 	if (!IsExistPreset(InPresetClass))
 	{
@@ -117,12 +117,12 @@ UsExtraUIPreset* UsExtraUIManagerSubsystem::AddPresetUnique(const TSubclassOf<Us
 	return nullptr;
 }
 
-bool UsExtraUIManagerSubsystem::IsExistPreset(const TSubclassOf<UsExtraUIPreset>& InPresetClass) const
+bool USUIManagerSubsystem::IsExistPreset(const TSubclassOf<USUIPreset>& InPresetClass) const
 {
 	return PresetsMultiMap.Contains(InPresetClass);
 }
 
-void UsExtraUIManagerSubsystem::RemovePreset(UsExtraUIPreset* InPreset)
+void USUIManagerSubsystem::RemovePreset(USUIPreset* InPreset)
 {
 	if (IsValid(InPreset))
 	{
@@ -133,9 +133,9 @@ void UsExtraUIManagerSubsystem::RemovePreset(UsExtraUIPreset* InPreset)
 	}
 }
 
-void UsExtraUIManagerSubsystem::RemovePresets(const TSubclassOf<UsExtraUIPreset>& InPresetClass)
+void USUIManagerSubsystem::RemovePresets(const TSubclassOf<USUIPreset>& InPresetClass)
 {
-	TArray<UsExtraUIPreset*> LFoundPresets;
+	TArray<USUIPreset*> LFoundPresets;
 	PresetsMultiMap.MultiFind(InPresetClass, LFoundPresets);
 
 	for (const auto LPreset : LFoundPresets)
@@ -147,17 +147,17 @@ void UsExtraUIManagerSubsystem::RemovePresets(const TSubclassOf<UsExtraUIPreset>
 	}
 
 	PresetsMultiMap.Remove(InPresetClass);
-	Presets.RemoveAll([&] (const UsExtraUIPreset* InA) -> bool
+	Presets.RemoveAll([&] (const USUIPreset* InA) -> bool
 	{
 		return InA->GetClass()->IsChildOf(InPresetClass);
 	});
 }
 
-UsExtraUIPresetDefault* UsExtraUIManagerSubsystem::GetDefaultPreset() const
+USUIPresetDefault* USUIManagerSubsystem::GetDefaultPreset() const
 {
 	if (!IsValid(DefaultPreset))
 	{
-		DefaultPreset = NewObject<UsExtraUIPresetDefault>(const_cast<UsExtraUIManagerSubsystem*>(this));
+		DefaultPreset = NewObject<USUIPresetDefault>(const_cast<USUIManagerSubsystem*>(this));
 		DefaultPreset->LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
 		DefaultPreset->OnInitialize();
 	}

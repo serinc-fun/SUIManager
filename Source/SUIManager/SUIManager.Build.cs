@@ -1,9 +1,9 @@
 
 using UnrealBuildTool;
 
-public class sExtraUIManager : ModuleRules
+public class SUIManager : ModuleRules
 {
-	public sExtraUIManager(ReadOnlyTargetRules Target) : base(Target)
+	public SUIManager(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 		

@@ -4,9 +4,9 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 
-#include "sExtraUIWidget.generated.h"
+#include "SUIWidget.generated.h"
 
-class UsExtraUIPreset;
+class USUIPreset;
 
 UENUM(BlueprintType, meta = (Bitflags, UseEnumValuesAsMaskValuesInEditor = "true"))
 namespace EsExtraUIWidgetActiveWith
@@ -24,10 +24,10 @@ ENUM_CLASS_FLAGS(EsExtraUIWidgetActiveWith::Type);
  * 
  */
 UCLASS(Abstract)
-class SEXTRAUIMANAGER_API UsExtraUIWidget : public UUserWidget
+class SUIMANAGER_API USUIWidget : public UUserWidget
 {
-	friend class UsExtraUIPreset;
-	friend class UsExtraUIManagerSubsystem;
+	friend class USUIPreset;
+	friend class USUIManagerSubsystem;
 	
 	GENERATED_BODY()
 
@@ -68,7 +68,7 @@ protected:
 private:
 
 	UPROPERTY(Transient)
-	UsExtraUIPreset* ParentPreset;
+	USUIPreset* ParentPreset;
 
 	UPROPERTY(Transient)
 	int32 TargetZOrder = 0;

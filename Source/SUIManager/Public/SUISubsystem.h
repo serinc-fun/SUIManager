@@ -3,23 +3,23 @@
 
 #include "CoreMinimal.h"
 #include "Subsystems/WorldSubsystem.h"
-#include "sExtraUISubsystem.generated.h"
+#include "SUISubsystem.generated.h"
 
-class UsExtraUIWidget;
-class UsExtraUIPreset;
-class UsExtraUIPresetDefault;
+class USUIWidget;
+class USUIPreset;
+class USUIPresetDefault;
 /**
  * 
  */
 UCLASS()
-class SEXTRAUIMANAGER_API UsExtraUIManagerSubsystem : public UWorldSubsystem
+class SUIMANAGER_API USUIManagerSubsystem : public UWorldSubsystem
 {
 	GENERATED_BODY()
 
 public:
 
 	UFUNCTION(BlueprintPure, Category = "sExtraUI|Manager", DisplayName = "Get sExtraUI Manager Subsystem", meta = (WorldContext="InWorldContext"))
-	static UsExtraUIManagerSubsystem* Get(const UObject* InWorldContext);
+	static USUIManagerSubsystem* Get(const UObject* InWorldContext);
 
 	// UWorldSubsystem overrides begin
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
@@ -31,36 +31,36 @@ public:
 	void DetermineInput();
 
 	UFUNCTION(BlueprintCallable, Category = "sExtraUI|Manager")
-	void WidgetActiveStateChange(UsExtraUIWidget* InWidget, bool InState);
+	void WidgetActiveStateChange(USUIWidget* InWidget, bool InState);
 	
 	UFUNCTION(BlueprintCallable, Category = "sExtraUI|Manager")
-	UsExtraUIPreset* AddPreset(const TSubclassOf<UsExtraUIPreset>& InPresetClass);
+	USUIPreset* AddPreset(const TSubclassOf<USUIPreset>& InPresetClass);
 
 	UFUNCTION(BlueprintCallable, Category = "sExtraUI|Manager")
-	UsExtraUIPreset* AddPresetUnique(const TSubclassOf<UsExtraUIPreset>& InPresetClass);
+	USUIPreset* AddPresetUnique(const TSubclassOf<USUIPreset>& InPresetClass);
 
 	UFUNCTION(BlueprintPure, Category = "sExtraUI|Manager")
-	bool IsExistPreset(const TSubclassOf<UsExtraUIPreset>& InPresetClass) const;
+	bool IsExistPreset(const TSubclassOf<USUIPreset>& InPresetClass) const;
 
 	UFUNCTION(BlueprintCallable, Category = "sExtraUI|Manager")
-	void RemovePreset(UsExtraUIPreset* InPreset);
+	void RemovePreset(USUIPreset* InPreset);
 	
 	UFUNCTION(BlueprintCallable, Category = "sExtraUI|Manager")
-	void RemovePresets(const TSubclassOf<UsExtraUIPreset>& InPresetClass);
+	void RemovePresets(const TSubclassOf<USUIPreset>& InPresetClass);
 
 	UFUNCTION(BlueprintPure, Category = "sExtraUI|Manager")
-	UsExtraUIPresetDefault* GetDefaultPreset() const;
+	USUIPresetDefault* GetDefaultPreset() const;
 
 protected:
 
 	UPROPERTY(Transient)
-	TArray<UsExtraUIPreset*> Presets;
+	TArray<USUIPreset*> Presets;
 
 	UPROPERTY(Transient)
-	mutable UsExtraUIPresetDefault* DefaultPreset;
+	mutable USUIPresetDefault* DefaultPreset;
 
 	UPROPERTY(Transient)
-	TArray<UsExtraUIWidget*> ActiveWidgets;
+	TArray<USUIWidget*> ActiveWidgets;
 
-	TMultiMap<TSubclassOf<UsExtraUIPreset>, UsExtraUIPreset*> PresetsMultiMap;
+	TMultiMap<TSubclassOf<USUIPreset>, USUIPreset*> PresetsMultiMap;
 };

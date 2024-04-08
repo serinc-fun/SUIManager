@@ -1,8 +1,8 @@
 ﻿using UnrealBuildTool;
 
-public class sExtraUIManagerDeveloper : ModuleRules
+public class SUIManagerDeveloper : ModuleRules
 {
-    public sExtraUIManagerDeveloper(ReadOnlyTargetRules Target) : base(Target)
+    public SUIManagerDeveloper(ReadOnlyTargetRules Target) : base(Target)
     {
         PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 
@@ -10,7 +10,7 @@ public class sExtraUIManagerDeveloper : ModuleRules
             new string[]
             {
                 "Core",
-                "sExtraUIManager"
+                "SUIManager"
             }
         );
 
