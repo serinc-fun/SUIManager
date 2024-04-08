@@ -3,6 +3,10 @@
 
 #include "CoreMinimal.h"
 #include "Subsystems/WorldSubsystem.h"
+#include "SUIDefine.h"
+#if IS_SUPPORT_GVS
+#include "Blueprint/GameViewportSubsystem.h"
+#endif
 #include "SUISubsystem.generated.h"
 
 class USUIWidget;
@@ -26,7 +30,7 @@ public:
 	virtual void Deinitialize() override;
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 	// UWorldSubsystem overrides end
-
+	
 	UFUNCTION(BlueprintCallable, Category = "sExtraUI|Manager")
 	void DetermineInput();
 

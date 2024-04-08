@@ -3,7 +3,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-
+#include "SUIDefine.h"
 #include "SUIWidget.generated.h"
 
 class USUIPreset;
@@ -49,7 +49,7 @@ public:
 	
 protected:
 
-#if ENGINE_MAJOR_VERSION < 5 || (ENGINE_MAJOR_VERSION > 4 && ENGINE_MINOR_VERSION < 3)
+#if !IS_SUPPORT_GVS
 	virtual void AddToScreen(ULocalPlayer* LocalPlayer, int32 ZOrder) override;
 #endif
 	
@@ -72,4 +72,5 @@ private:
 
 	UPROPERTY(Transient)
 	int32 TargetZOrder = 0;
+	
 };

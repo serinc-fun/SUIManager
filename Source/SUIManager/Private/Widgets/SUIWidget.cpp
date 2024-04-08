@@ -4,6 +4,7 @@
 #include "SUIPreset.h"
 #include "SUISubsystem.h"
 
+
 void USUIWidget::ActivateWidget_Implementation()
 {
 	if (!IsActive())
@@ -42,7 +43,7 @@ void USUIWidget::RemoveFromParent()
 	Super::RemoveFromParent();
 }
 
-#if ENGINE_MAJOR_VERSION < 5 || (ENGINE_MAJOR_VERSION > 4 && ENGINE_MINOR_VERSION < 3)
+#if !IS_SUPPORT_GVS
 void USUIWidget::AddToScreen(ULocalPlayer* LocalPlayer, int32 ZOrder)
 {
 	TargetZOrder = ZOrder + 10;

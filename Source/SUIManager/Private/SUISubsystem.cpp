@@ -40,10 +40,19 @@ void USUIManagerSubsystem::DetermineInput()
 {
 	if (ActiveWidgets.Num() > 0)
 	{
+#if IS_SUPPORT_GVS
+		ActiveWidgets.Sort([] (USUIWidget& InA, USUIWidget& InB) -> bool
+		{
+			const auto LSlotA = UGameViewportSubsystem::Get()->GetWidgetSlot(&InA);
+			const auto LSlotB = UGameViewportSubsystem::Get()->GetWidgetSlot(&InB);
+			return LSlotA.ZOrder > LSlotB.ZOrder;
+		});
+#else
 		ActiveWidgets.Sort([] (USUIWidget& InA, USUIWidget& InB) -> bool
 		{
 			return InA.TargetZOrder > InB.TargetZOrder;
 		});
+#endif
 	
 		const auto LLastActiveWidget = ActiveWidgets.Last();
 		if (IsValid(LLastActiveWidget))
