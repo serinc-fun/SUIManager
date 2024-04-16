@@ -60,18 +60,18 @@ void USUIManagerSubsystem::DetermineInput()
 			const auto LPlayerController = LLastActiveWidget->GetOwningPlayer();
 			const auto LFlags = LLastActiveWidget->GetActivateFlags();
 
-			if ((LFlags & EsExtraUIWidgetActiveWith::Without | EsExtraUIWidgetActiveWith::None) != 0)
+			if ((LFlags & ESUIWidgetActiveWith::Without | ESUIWidgetActiveWith::None) != 0)
 			{
 				LPlayerController->SetInputMode(FInputModeGameOnly().SetConsumeCaptureMouseDown(true));
 				LPlayerController->SetShowMouseCursor(false);
 			}
 
-			if ((LFlags & EsExtraUIWidgetActiveWith::WithInput) != 0)
+			if ((LFlags & ESUIWidgetActiveWith::WithInput) != 0)
 			{
 				LPlayerController->SetInputMode(FInputModeUIOnly().SetWidgetToFocus(LLastActiveWidget->GetCachedWidget()));
 			}
 
-			if ((LFlags & EsExtraUIWidgetActiveWith::WithCursor) != 0)
+			if ((LFlags & ESUIWidgetActiveWith::WithCursor) != 0)
 			{
 				LPlayerController->SetShowMouseCursor(true);
 			}
@@ -95,6 +95,7 @@ void USUIManagerSubsystem::WidgetActiveStateChange(USUIWidget* InWidget, bool In
 		else
 			ActiveWidgets.Remove(InWidget);
 
+		InWidget->OnWidgetStateChanged(InState);
 		DetermineInput();
 	}
 }
@@ -135,6 +136,11 @@ void USUIManagerSubsystem::RemovePreset(USUIPreset* InPreset)
 {
 	if (IsValid(InPreset))
 	{
+		ActiveWidgets.RemoveAll([&] (const USUIWidget* InItem)
+		{
+			return InPreset->Widgets.Contains(InItem);
+		});
+		
 		InPreset->OnDeinitialize();
 
 		PresetsMultiMap.RemoveSingle(InPreset->GetClass(), InPreset);
@@ -151,6 +157,11 @@ void USUIManagerSubsystem::RemovePresets(const TSubclassOf<USUIPreset>& InPreset
 	{
 		if (IsValid(LPreset))
 		{
+			ActiveWidgets.RemoveAll([&] (const USUIWidget* InItem)
+			{
+				return LPreset->Widgets.Contains(InItem);
+			});
+			
 			LPreset->OnDeinitialize();
 		}
 	}

@@ -5,6 +5,7 @@
 #include "UObject/Object.h"
 #include "SUIPreset.generated.h"
 
+class UWidget;
 class USUIWidget;
 /**
  * 
@@ -37,11 +38,16 @@ public:
 	
 protected:
 
-	UFUNCTION(BlueprintNativeEvent)
-	void OnInitialize();
+	virtual void OnInitialize();
+	virtual void OnDeinitialize();
 
-	UFUNCTION(BlueprintNativeEvent)
-	void OnDeinitialize();
+	virtual void OnWidgetAddedToViewport(UWidget* InWidget, ULocalPlayer* InPlayer);
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnInitialized();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnDeinitialized();
 	
 	UPROPERTY(EditDefaultsOnly, Category = Configuration)
 	FName PresetName;

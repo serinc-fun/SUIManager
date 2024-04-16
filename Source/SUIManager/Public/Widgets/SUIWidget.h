@@ -9,7 +9,7 @@
 class USUIPreset;
 
 UENUM(BlueprintType, meta = (Bitflags, UseEnumValuesAsMaskValuesInEditor = "true"))
-namespace EsExtraUIWidgetActiveWith
+namespace ESUIWidgetActiveWith
 {
 	enum Type
 	{
@@ -19,7 +19,7 @@ namespace EsExtraUIWidgetActiveWith
 		WithCursor		= 1 << 2	// Only for show cursor
 	};
 }
-ENUM_CLASS_FLAGS(EsExtraUIWidgetActiveWith::Type);
+ENUM_CLASS_FLAGS(ESUIWidgetActiveWith::Type);
 /**
  * 
  */
@@ -33,16 +33,16 @@ class SUIMANAGER_API USUIWidget : public UUserWidget
 
 public:
 	
-	UFUNCTION(BlueprintPure, Category = "sExtraUI|Manager|Widget")
+	UFUNCTION(BlueprintPure, Category = "SUI|Manager|Widget")
 	FORCEINLINE bool IsActive() const { return bIsActive; }
 
-	UFUNCTION(BlueprintPure, Category = "sExtraUI|Manager|Widget")
-	UPARAM(meta = (Bitmask, BitmaskEnum = EsExtraUIWidgetActiveWith)) int32 GetActivateFlags() const { return ActivateFlags; }
+	UFUNCTION(BlueprintPure, Category = "SUI|Manager|Widget")
+	UPARAM(meta = (Bitmask, BitmaskEnum = ESUIWidgetActiveWith)) int32 GetActivateFlags() const { return ActivateFlags; }
 	
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "sExtraUI|Manager|Widget")
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "SUI|Manager|Widget")
 	void ActivateWidget();
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "sExtraUI|Manager|Widget")
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "SUI|Manager|Widget")
 	void DeactivateWidget();
 
 	virtual void RemoveFromParent() override;
@@ -52,15 +52,23 @@ protected:
 #if !IS_SUPPORT_GVS
 	virtual void AddToScreen(ULocalPlayer* LocalPlayer, int32 ZOrder) override;
 #endif
+
+	virtual void OnAddedToViewport(); 
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (Bitmask, BitmaskEnum = EsExtraUIWidgetActiveWith), Category = Configuration)
-	int32 ActivateFlags = EsExtraUIWidgetActiveWith::WithCursor;
+	UFUNCTION(BlueprintNativeEvent, Category = "SUI|Manager|Widget")
+	void OnWidgetStateChanged(bool bIsActivated);
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (Bitmask, BitmaskEnum = ESUIWidgetActiveWith), Category = Configuration)
+	int32 ActivateFlags = ESUIWidgetActiveWith::WithCursor;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Configuration)
 	ESlateVisibility ActivateVisibility = ESlateVisibility::SelfHitTestInvisible;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Configuration)
 	ESlateVisibility DeactivateVisibility = ESlateVisibility::Collapsed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Configuration)
+	bool bAutoActivate = false;
 
 	UPROPERTY(Transient, BlueprintReadOnly)
 	bool bIsActive = false;

@@ -1,6 +1,9 @@
 ﻿// Copyright Serinc All Rights Reserved.
 #include "SUIPreset.h"
-
+#include "SUIDefine.h"
+#if IS_SUPPORT_GVS
+#include "Blueprint/GameViewportSubsystem.h"
+#endif
 #include "Widgets/SUIWidget.h"
 
 USUIWidget* USUIPreset::CreatePresetWidget(TSubclassOf<USUIWidget> InWidgetClass)
@@ -64,12 +67,34 @@ UWorld* USUIPreset::GetWorld() const
 	return nullptr;
 }
 
-void USUIPreset::OnDeinitialize_Implementation()
+void USUIPreset::OnInitialize()
 {
+#if IS_SUPPORT_GVS
+	UGameViewportSubsystem::Get()->OnWidgetAdded.AddUObject(this, &USUIPreset::OnWidgetAddedToViewport);
+#endif	
 	
+	OnInitialized();
 }
 
-void USUIPreset::OnInitialize_Implementation()
+void USUIPreset::OnDeinitialize()
 {
+	for (USUIWidget* Widget : Widgets)
+	{
+		Widget->RemoveFromParent();
+	}
+
+#if IS_SUPPORT_GVS
+	UGameViewportSubsystem::Get()->OnWidgetAdded.RemoveAll(this);
+#endif
 	
+	OnDeinitialized();
 }
+
+void USUIPreset::OnWidgetAddedToViewport(UWidget* InWidget, ULocalPlayer* InPlayer)
+{
+	if (Widgets.Contains(InWidget))
+	{
+		Cast<USUIWidget>(InWidget)->OnAddedToViewport();
+	}
+}
+

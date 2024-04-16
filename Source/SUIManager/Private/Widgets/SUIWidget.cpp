@@ -43,6 +43,19 @@ void USUIWidget::RemoveFromParent()
 	Super::RemoveFromParent();
 }
 
+void USUIWidget::OnAddedToViewport()
+{
+	if (bAutoActivate)
+	{
+		ActivateWidget();
+	}
+}
+
+void USUIWidget::OnWidgetStateChanged_Implementation(bool bIsActivated)
+{
+	
+}
+
 #if !IS_SUPPORT_GVS
 void USUIWidget::AddToScreen(ULocalPlayer* LocalPlayer, int32 ZOrder)
 {

@@ -22,7 +22,7 @@ class SUIMANAGER_API USUIManagerSubsystem : public UWorldSubsystem
 
 public:
 
-	UFUNCTION(BlueprintPure, Category = "sExtraUI|Manager", DisplayName = "Get sExtraUI Manager Subsystem", meta = (WorldContext="InWorldContext"))
+	UFUNCTION(BlueprintPure, Category = "SUI|Manager", DisplayName = "Get SUI Manager Subsystem", meta = (WorldContext="InWorldContext"))
 	static USUIManagerSubsystem* Get(const UObject* InWorldContext);
 
 	// UWorldSubsystem overrides begin
@@ -31,28 +31,28 @@ public:
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 	// UWorldSubsystem overrides end
 	
-	UFUNCTION(BlueprintCallable, Category = "sExtraUI|Manager")
+	UFUNCTION(BlueprintCallable, Category = "SUI|Manager")
 	void DetermineInput();
 
-	UFUNCTION(BlueprintCallable, Category = "sExtraUI|Manager")
+	UFUNCTION(BlueprintCallable, Category = "SUI|Manager")
 	void WidgetActiveStateChange(USUIWidget* InWidget, bool InState);
 	
-	UFUNCTION(BlueprintCallable, Category = "sExtraUI|Manager")
+	UFUNCTION(BlueprintCallable, Category = "SUI|Manager")
 	USUIPreset* AddPreset(const TSubclassOf<USUIPreset>& InPresetClass);
 
-	UFUNCTION(BlueprintCallable, Category = "sExtraUI|Manager")
+	UFUNCTION(BlueprintCallable, Category = "SUI|Manager")
 	USUIPreset* AddPresetUnique(const TSubclassOf<USUIPreset>& InPresetClass);
 
-	UFUNCTION(BlueprintPure, Category = "sExtraUI|Manager")
+	UFUNCTION(BlueprintPure, Category = "SUI|Manager")
 	bool IsExistPreset(const TSubclassOf<USUIPreset>& InPresetClass) const;
 
-	UFUNCTION(BlueprintCallable, Category = "sExtraUI|Manager")
+	UFUNCTION(BlueprintCallable, Category = "SUI|Manager")
 	void RemovePreset(USUIPreset* InPreset);
 	
-	UFUNCTION(BlueprintCallable, Category = "sExtraUI|Manager")
+	UFUNCTION(BlueprintCallable, Category = "SUI|Manager")
 	void RemovePresets(const TSubclassOf<USUIPreset>& InPresetClass);
 
-	UFUNCTION(BlueprintPure, Category = "sExtraUI|Manager")
+	UFUNCTION(BlueprintPure, Category = "SUI|Manager")
 	USUIPresetDefault* GetDefaultPreset() const;
 
 protected:
